@@ -26,15 +26,12 @@ A modern, full-stack Resume Builder application designed to help users create pr
 - **PDF Generation:** OpenHTMLToPDF, Thymeleaf, JSoup
 - **Build Tool:** Maven
 
-*(Note: The repository also contains a `/backend` directory for Python-based scripts/microservices)*
-
 ## 📂 Project Structure
 
 ```text
 📦 pressroom-resume-builder
  ┣ 📂 frontend        # React.js frontend application
  ┣ 📂 backend-java    # Spring Boot Java backend
- ┣ 📂 backend         # Python scripts/services
  ┣ 📜 .gitignore      # Git ignore rules
  ┗ 📜 README.md       # Project documentation
 ```
