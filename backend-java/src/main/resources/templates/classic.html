@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<title th:text="${r.personal?.fullName != null and r.personal.fullName != '' ? r.personal.fullName : 'Resume'}">Resume</title>
+<style>
+@page { size: A4; margin: 14mm; }
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; font-family: 'Helvetica', 'Arial', sans-serif; color: #1C1B1A; font-size: 10pt; line-height: 1.5; background: #fff; }
+h1 { font-family: 'Georgia', serif; font-size: 26pt; font-weight: 500; letter-spacing: -0.3px; margin: 0 0 4px; }
+.role { font-size: 11.5pt; color: #5C5A56; margin-bottom: 2px; }
+.meta { font-size: 10pt; color: #5C5A56; margin-bottom: 12px; }
+.h2 { font-weight: 700; font-size: 12pt; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid #000; margin: 12px 0 5px; }
+ul { margin: 4px 0 8px 18px; }
+li { margin-bottom: 2px; }
+.summary { margin: 6px 0; }
+.row { display: flex; justify-content: space-between; gap: 10px; }
+.left { font-weight: 600; }
+.right { color: #5C5A56; font-style: italic; }
+</style>
+</head>
+<body>
+<h1 th:text="${r.personal?.fullName != null and r.personal.fullName != '' ? r.personal.fullName : 'Your Name'}">Your Name</h1>
+<div class="role" th:text="${r.personal?.title}"></div>
+<div class="meta">
+  <span th:if="${r.personal?.email != null and r.personal.email != ''}" th:text="${r.personal.email} + ' &middot; '"></span>
+  <span th:if="${r.personal?.phone != null and r.personal.phone != ''}" th:text="${r.personal.phone} + ' &middot; '"></span>
+  <span th:if="${r.personal?.location != null and r.personal.location != ''}" th:text="${r.personal.location}"></span>
+  <span th:if="${r.personal?.website != null and r.personal.website != ''}" th:text="' &middot; ' + ${r.personal.website}"></span>
+</div>
+
+<div th:if="${r.personal?.summary != null and r.personal.summary != ''}">
+  <div class="h2">Summary</div>
+  <div class="summary" th:text="${r.personal.summary}"></div>
+</div>
+
+<div th:if="${r.experience != null and !r.experience.isEmpty()}">
+  <div class="h2">Experience</div>
+  <div th:each="e : ${r.experience}">
+    <div class="row">
+      <div class="left" th:text="${e.role} + ' &mdash; ' + ${e.company}"></div>
+      <div class="right">
+        <span th:text="${e.startDate}"></span><span th:if="${e.startDate != null and e.startDate != '' and e.endDate != null and e.endDate != ''}"> &ndash; </span><span th:text="${e.endDate}"></span>
+      </div>
+    </div>
+    <div th:if="${e.location != null and e.location != ''}" style="font-size:9.5pt; color:#5C5A56;" th:text="${e.location}"></div>
+    <ul th:if="${e.bullets != null and !e.bullets.isEmpty()}">
+      <li th:each="b : ${e.bullets}" th:if="${b != null and b != ''}" th:text="${b}"></li>
+    </ul>
+  </div>
+</div>
+
+<div th:if="${r.education != null and !r.education.isEmpty()}">
+  <div class="h2">Education</div>
+  <div th:each="ed : ${r.education}">
+    <div class="row">
+      <div class="left" th:text="${ed.school}"></div>
+      <div class="right">
+        <span th:text="${ed.startDate}"></span><span th:if="${ed.startDate != null and ed.startDate != '' and ed.endDate != null and ed.endDate != ''}"> &ndash; </span><span th:text="${ed.endDate}"></span>
+      </div>
+    </div>
+    <div>
+      <span th:text="${ed.degree}"></span><span th:if="${ed.degree != null and ed.degree != '' and ed.field != null and ed.field != ''}">, </span><span th:text="${ed.field}"></span>
+    </div>
+    <div th:if="${ed.details != null and ed.details != ''}" style="font-size:9.5pt" th:text="${ed.details}"></div>
+  </div>
+</div>
+
+<div th:if="${r.projects != null and !r.projects.isEmpty()}">
+  <div class="h2">Projects</div>
+  <div th:each="p : ${r.projects}">
+    <div class="row"><div class="left" th:text="${p.name}"></div><div class="right" th:text="${p.link}"></div></div>
+    <div th:if="${p.tech != null and p.tech != ''}"><em th:text="${p.tech}"></em></div>
+    <div th:if="${p.description != null and p.description != ''}" th:text="${p.description}"></div>
+    <ul th:if="${p.bullets != null and !p.bullets.isEmpty()}">
+      <li th:each="b : ${p.bullets}" th:text="${b}"></li>
+    </ul>
+  </div>
+</div>
+
+<div th:if="${r.skills != null and !r.skills.isEmpty()}">
+  <div class="h2">Skills</div>
+  <div th:each="s : ${r.skills}">
+    <strong><span th:text="${s.category}"></span>:</strong> <span th:text="${#strings.listJoin(s.items, ', ')}"></span>
+  </div>
+</div>
+
+<div th:if="${r.certifications != null and !r.certifications.isEmpty()}">
+  <div class="h2">Certifications</div>
+  <div th:each="c : ${r.certifications}">
+    <strong><span th:text="${c.name}"></span></strong> &mdash; <span th:text="${c.issuer}"></span><span th:if="${c.date != null and c.date != ''}" th:text="' (' + ${c.date} + ')'"></span>
+  </div>
+</div>
+</body>
+</html>

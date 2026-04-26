@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<title th:text="${r.personal?.fullName != null and r.personal.fullName != '' ? r.personal.fullName : 'Resume'}">Resume</title>
+<style>
+@page { size: A4; margin: 16mm; }
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; font-family: 'Times New Roman', serif; color: #1C1B1A; font-size: 10.5pt; line-height: 1.5; background: #fff; }
+header { border-bottom: 2px solid #000; padding-bottom: 12px; margin-bottom: 16px; }
+h1 { font-size: 38pt; font-weight: 500; margin: 0; line-height: 1; }
+.title { color: #E06D53; font-size: 11pt; text-transform: uppercase; letter-spacing: 1px; margin-top: 8px; }
+.meta { margin-top: 12px; font-size: 9pt; color: #5C5A56; text-transform: uppercase; letter-spacing: 0.5px; }
+.summary { border-left: 3px solid #E06D53; padding-left: 12px; font-style: italic; margin: 20px 0; font-size: 11.5pt; }
+.h2 { font-size: 16pt; border-bottom: 1px solid #ccc; text-transform: uppercase; margin: 24px 0 12px; padding-bottom: 4px; }
+.row { display: flex; justify-content: space-between; align-items: baseline; }
+.left { font-weight: bold; font-size: 12pt; }
+.right { color: #5C5A56; font-size: 9.5pt; text-transform: uppercase; }
+ul { margin: 6px 0 16px 18px; }
+li { margin-bottom: 3px; }
+.grid { display: flex; gap: 20px; }
+.col { flex: 1; }
+</style>
+</head>
+<body>
+<header>
+  <h1 th:text="${r.personal?.fullName != null and r.personal.fullName != '' ? r.personal.fullName : 'Your Name'}"></h1>
+  <div class="title" th:text="${r.personal?.title}"></div>
+  <div class="meta">
+    <span th:if="${r.personal?.email != null and r.personal.email != ''}" th:text="${r.personal.email} + ' &nbsp;&nbsp;&nbsp; '"></span>
+    <span th:if="${r.personal?.phone != null and r.personal.phone != ''}" th:text="${r.personal.phone} + ' &nbsp;&nbsp;&nbsp; '"></span>
+    <span th:if="${r.personal?.location != null and r.personal.location != ''}" th:text="${r.personal.location}"></span>
+  </div>
+</header>
+
+<div th:if="${r.personal?.summary != null and r.personal.summary != ''}" class="summary" th:text="${r.personal.summary}"></div>
+
+<div th:if="${r.experience != null and !r.experience.isEmpty()}">
+  <div class="h2">Experience</div>
+  <div th:each="e : ${r.experience}">
+    <div class="row">
+      <div class="left"><span th:text="${e.role}"></span> <span style="color:#E06D53">&mdash;</span> <span th:text="${e.company}"></span></div>
+      <div class="right">
+        <span th:text="${e.startDate}"></span><span th:if="${e.startDate != null and e.startDate != '' and e.endDate != null and e.endDate != ''}"> &ndash; </span><span th:text="${e.endDate}"></span>
+      </div>
+    </div>
+    <ul th:if="${e.bullets != null and !e.bullets.isEmpty()}">
+      <li th:each="b : ${e.bullets}" th:text="${b}"></li>
+    </ul>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="col">
+    <div th:if="${r.education != null and !r.education.isEmpty()}">
+      <div class="h2">Education</div>
+      <div th:each="ed : ${r.education}" style="margin-bottom:12px;">
+        <strong th:text="${ed.school}"></strong>
+        <div th:text="${ed.degree} + ' in ' + ${ed.field}"></div>
+        <div class="right" style="margin-top:2px;">
+          <span th:text="${ed.startDate}"></span><span th:if="${ed.startDate != null and ed.startDate != '' and ed.endDate != null and ed.endDate != ''}"> &ndash; </span><span th:text="${ed.endDate}"></span>
+        </div>
+      </div>
+    </div>
+    <div th:if="${r.certifications != null and !r.certifications.isEmpty()}">
+      <div class="h2">Certifications</div>
+      <div th:each="c : ${r.certifications}" style="margin-bottom:12px;">
+        <strong th:text="${c.name}"></strong>
+        <div th:text="${c.issuer}"></div>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div th:if="${r.projects != null and !r.projects.isEmpty()}">
+      <div class="h2">Projects</div>
+      <div th:each="p : ${r.projects}" style="margin-bottom:12px;">
+        <strong th:text="${p.name}"></strong>
+        <div style="font-style:italic; font-size:9.5pt; color:#5C5A56;" th:text="${p.tech}"></div>
+        <div th:text="${p.description}"></div>
+      </div>
+    </div>
+    <div th:if="${r.skills != null and !r.skills.isEmpty()}">
+      <div class="h2">Skills</div>
+      <div th:each="s : ${r.skills}" style="margin-bottom:8px;">
+        <div style="font-weight:bold; font-size:9pt; text-transform:uppercase; color:#5C5A56;" th:text="${s.category}"></div>
+        <div th:text="${#strings.listJoin(s.items, ', ')}"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
