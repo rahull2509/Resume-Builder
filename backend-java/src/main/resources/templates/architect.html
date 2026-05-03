@@ -7,9 +7,9 @@
 @page { size: A4; margin: 0; }
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; font-family: 'Helvetica', sans-serif; color: #1C1B1A; font-size: 10pt; line-height: 1.5; background: #fff; }
-.container { display: flex; width: 210mm; min-height: 297mm; }
-.sidebar { width: 32%; background: #F2F6F4; padding: 16mm; }
-.main { width: 68%; padding: 16mm; }
+.container { width: 100%; height: 100%; min-height: 297mm; overflow: hidden; }
+.sidebar { float: left; width: 32%; background: #F2F6F4; padding: 16mm; min-height: 297mm; box-sizing: border-box; }
+.main { float: right; width: 68%; padding: 16mm; box-sizing: border-box; }
 h1 { font-size: 22pt; color: #1E3F33; margin: 0 0 4px; line-height: 1.1; }
 .title { font-size: 11pt; color: #2A5746; margin-bottom: 24px; }
 .h2-side { font-size: 10pt; text-transform: uppercase; color: #1E3F33; border-bottom: 2px solid #1E3F33; padding-bottom: 2px; margin: 24px 0 12px; font-weight: bold; }
@@ -17,7 +17,7 @@ h1 { font-size: 22pt; color: #1E3F33; margin: 0 0 4px; line-height: 1.1; }
 .contact-item { margin-bottom: 6px; color: #2A5746; }
 .section-main { margin-bottom: 24px; }
 .item-main { margin-bottom: 16px; }
-.item-header { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 4px; }
+.item-header { clear: both; overflow: hidden; font-weight: bold; margin-bottom: 4px; }
 .item-sub { color: #5C5A56; font-size: 9.5pt; margin-bottom: 4px; }
 ul { margin: 4px 0 0 16px; }
 li { margin-bottom: 3px; }
@@ -62,7 +62,7 @@ li { margin-bottom: 3px; }
       <div class="item-main" th:each="e : ${r.experience}">
         <div class="item-header">
           <span th:text="${e.role} + ' &middot; ' + ${e.company}"></span>
-          <span style="font-weight:normal; color:#5C5A56;">
+          <span style="font-weight:normal; color:#5C5A56; float:right;">
              <span th:text="${e.startDate}"></span><span th:if="${e.startDate != null and e.startDate != '' and e.endDate != null and e.endDate != ''}"> &ndash; </span><span th:text="${e.endDate}"></span>
           </span>
         </div>
@@ -77,7 +77,7 @@ li { margin-bottom: 3px; }
       <div class="item-main" th:each="ed : ${r.education}">
         <div class="item-header">
           <span th:text="${ed.degree} + ' ' + ${ed.field}"></span>
-          <span style="font-weight:normal; color:#5C5A56;">
+          <span style="font-weight:normal; color:#5C5A56; float:right;">
              <span th:text="${ed.startDate}"></span><span th:if="${ed.startDate != null and ed.startDate != '' and ed.endDate != null and ed.endDate != ''}"> &ndash; </span><span th:text="${ed.endDate}"></span>
           </span>
         </div>
@@ -90,7 +90,7 @@ li { margin-bottom: 3px; }
       <div class="item-main" th:each="p : ${r.projects}">
         <div class="item-header">
           <span th:text="${p.name}"></span>
-          <span style="font-weight:normal; font-style:italic; color:#5C5A56;" th:text="${p.tech}"></span>
+          <span style="font-weight:normal; font-style:italic; color:#5C5A56; float:right;" th:text="${p.tech}"></span>
         </div>
         <div class="item-sub" th:text="${p.description}"></div>
         <ul th:if="${p.bullets != null and !p.bullets.isEmpty()}">
